@@ -14,6 +14,7 @@ import os
 import django_heroku
 import dj_database_url
 from decouple import config, Csv
+import cloudinary
 
 
 MODE = config('MODE', default="dev")
@@ -68,6 +69,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'cloudinary',
 ]
 
 MIDDLEWARE = [
@@ -175,6 +177,12 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
+# Cloudinary Configurations
+cloudinary.config(
+  cloud_name = os.environ.get('CLOUD_NAME'),
+  api_key = os.environ.get('API_KEY'),
+  api_secret = os.environ.get('API_SECRET'),
+)
 
 # CORS_ORIGIN_WHITELIST = [
 #     "https://example.com",
