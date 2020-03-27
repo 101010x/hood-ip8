@@ -61,7 +61,7 @@ class TestProfileClass(TestCase):
     def test_update_profile(self):
         '''Test Updating a profile'''
         self.test_profile.update_class(bio='This is a new test bio')
-        profile = Profile.objects.get(id = self.test_profile.id).first()
+        profile = Profile.objects.get(id = self.test_profile.id)
         self.assertEqual(profile.bio, self.test_profile.bio)
 
     def test_update_profile_hood(self):
@@ -107,7 +107,7 @@ class TestHoodModel(TestCase):
     def test_update_hood(self):
         '''Test Updating a hood'''
         self.test_hood.update_class(location='Kisumu')
-        hood = Hood.objects.get(id = self.test_hood.id).first()
+        hood = Hood.objects.get(id = self.test_hood.id)
         self.assertEqual(hood.location, self.test_hood.location)
 
     def test_get_and_update_occupants_count(self):
@@ -201,7 +201,7 @@ class TestBussiness(TestCase):
     def test_update_bussiness(self):
         '''To test updating of a bussiness'''
         self.test_biz.update_class(name='New Test Biz')
-        biz = Bussiness.objects.get(id = self.test_biz.id).first()
+        biz = Bussiness.objects.get(id = self.test_biz.id)
         self.assertEqual(biz.name, self.test_biz.name)
 
 
@@ -211,7 +211,7 @@ class TestEmergencyService(TestCase):
         '''Prepare before running every test case'''
         self.test_hood = Hood(hood_name = 'TestHood', location='Nairobi')
         self.test_hood.save_class()
-        self.test_service = EmergencyService(name='Makueni Police Service', email='makuenipolice@police.com', contact_number='0736466942', department='Police Department', description='This is a test Emergency police service', hood=self.test_hood)
+        self.test_service = EmergencyService(name='Makueni Police Service', email='makuenipolice@police.com', contact_number='0736466942', department='PD', description='This is a test Emergency police service', hood=self.test_hood)
         self.test_service.save_class()
 
     def tearDown(self):
@@ -237,5 +237,5 @@ class TestEmergencyService(TestCase):
     def test_update_service(self):
         '''To test updating an emergency service'''
         self.test_service.update_class(name='Makueni Police')
-        service = EmergencyService.objects.get(id=self.test_service.id).first()
+        service = EmergencyService.objects.get(id=self.test_service.id)
         self.assertEqual(self.test_service.name, service.name)
