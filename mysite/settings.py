@@ -126,20 +126,11 @@ USE_L10N = True
 
 USE_TZ = True
 
-# REST_FRAMEWORK = {
-#     'DEFAULT_PERMISSION_CLASSES': (
-#         # 'rest_framework.permissions.IsAuthenticated',
-#     ),
-#     'DEFAULT_AUTHENTICATION_CLASSES': (
-#         # 'rest_framework.authentication.SessionAuthentication',
-#         'rest_framework.authentication.BasicAuthentication',
-#         # 'rest_framework.authentication.TokenAuthentication',
-#     )
-# }
-
-# AUTHENTICATION_BACKENDS = (
-#    "django.contrib.auth.backends.ModelBackend",
-# )
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    )
+}
 
 # Cloudinary Configurations
 cloudinary.config(
@@ -148,11 +139,3 @@ cloudinary.config(
   api_secret = os.environ.get('API_SECRET'),
 )
 
-# CORS_ORIGIN_WHITELIST = [
-#     "https://example.com",
-#     "https://sub.example.com",
-#     "http://127.0.0.1:4200",
-#     "http://127.0.0.1:5000",
-#     "https://project-or-17be4.firebaseapp.com",
-#     "https://project-or-17be4.web.app",
-# ]

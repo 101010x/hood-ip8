@@ -15,6 +15,7 @@ gunicorn = "*"
 python-decouple = "*"
 psycopg2 = "*"
 cloudinary = "*"
+djangorestframework-simplejwt = "*"
 
 [requires]
 python_version = "3.6"
