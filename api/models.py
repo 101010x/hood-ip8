@@ -27,6 +27,11 @@ LOCATION_CHOICES = (
     ('Mombasa', 'Mombasa'),
 )
 
+DEPARTMENTS = (
+    ('FD', 'Fire Department'),
+    ('MD', 'Medical Department'),
+    ('PD', 'Police Department'),
+)
 class User(AbstractUser):
     '''Extending the base user'''
     is_admin_status = models.BooleanField(default=False)
@@ -80,3 +85,15 @@ class Bussiness(models.Model, CrudMethods):
 
     def __str__(self):
         return self.name
+
+class EmergencyService(models.Model, CrudMethods):
+    '''Model Table for emergency services'''
+    name = models.CharField(max_length=200)
+    email = models.EmailField()
+    contact_number = models.CharField(max_length=10)
+    department = models.CharField(max_length=2, choices=DEPARTMENTS, default='FD')
+    description = models.TextField()
+    hood = models.ForeignKey(Hood, on_delete=models.CASCADE, related_name='hoodemergencyservice')
+
+    def __str__(self):
+        return '{} of department {}'.format(self.name, self.department)

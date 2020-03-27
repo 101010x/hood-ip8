@@ -1,7 +1,8 @@
 from django.test import TestCase
-from .models import Profile, Hood, Post, Bussiness, User
+from .models import Profile, Hood, Post, Bussiness, User, EmergencyService
 import cloudinary
 
+# Model Tests
 class TestAbstractUser(TestCase):
     '''Test class to test the abstract test user extension'''
     def setUp(self):
@@ -60,7 +61,7 @@ class TestProfileClass(TestCase):
     def test_update_profile(self):
         '''Test Updating a profile'''
         self.test_profile.update_class(bio='This is a new test bio')
-        profile = Profile.objects.get(id = self.test_profile.id)
+        profile = Profile.objects.get(id = self.test_profile.id).first()
         self.assertEqual(profile.bio, self.test_profile.bio)
 
     def test_update_profile_hood(self):
@@ -106,7 +107,7 @@ class TestHoodModel(TestCase):
     def test_update_hood(self):
         '''Test Updating a hood'''
         self.test_hood.update_class(location='Kisumu')
-        hood = Hood.objects.get(id = self.test_hood.id)
+        hood = Hood.objects.get(id = self.test_hood.id).first()
         self.assertEqual(hood.location, self.test_hood.location)
 
     def test_get_and_update_occupants_count(self):
@@ -200,5 +201,41 @@ class TestBussiness(TestCase):
     def test_update_bussiness(self):
         '''To test updating of a bussiness'''
         self.test_biz.update_class(name='New Test Biz')
-        biz = Bussiness.objects.get(id = self.test_biz.id)
+        biz = Bussiness.objects.get(id = self.test_biz.id).first()
         self.assertEqual(biz.name, self.test_biz.name)
+
+
+class TestEmergencyService(TestCase):
+    '''Test class to test the EmergencyService Class'''
+    def setUp(self):
+        '''Prepare before running every test case'''
+        self.test_hood = Hood(hood_name = 'TestHood', location='Nairobi')
+        self.test_hood.save_class()
+        self.test_service = EmergencyService(name='Makueni Police Service', email='makuenipolice@police.com', contact_number='0736466942', department='Police Department', description='This is a test Emergency police service', hood=self.test_hood)
+        self.test_service.save_class()
+
+    def tearDown(self):
+        '''To clean up after every test case'''
+        Hood.objects.all().delete()
+        EmergencyService.objects.all().delete()
+
+    def test_isinstance(self):
+        '''To test if test_service is an instance of the EmergencyService class'''
+        self.assertTrue(isinstance(self.test_service, EmergencyService))
+
+    def test_save_service(self):
+        '''To test saving an emergency service'''
+        services = EmergencyService.objects.all().count()
+        self.assertTrue(services == 1)
+
+    def test_delete_service(self):
+        '''To test deleting an emergency service'''
+        self.test_service.delete_class()
+        services = EmergencyService.objects.all().count()
+        self.assertTrue(services == 0)
+
+    def test_update_service(self):
+        '''To test updating an emergency service'''
+        self.test_service.update_class(name='Makueni Police')
+        service = EmergencyService.objects.get(id=self.test_service.id).first()
+        self.assertEqual(self.test_service.name, service.name)
