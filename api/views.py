@@ -3,7 +3,7 @@ from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import AllowAny, IsAuthenticated, IsAdminUser, IsAuthenticatedOrReadOnly
-from rest_framework.parsers import MultiPartParser, JSONParser
+from rest_framework.parsers import FileUploadParser
 import cloudinary.uploader
 from .serializers import *
 from .models import *
@@ -100,6 +100,7 @@ class HoodDetailsView(APIView):
 class ProfileCreateView(APIView):
     '''Class view to create a profile'''
     permission_classes = [IsAuthenticated]
+    parser_classes = [FileUploadParser]
 
     def get(self, request, format=None):
         if request.user.is_superuser == True:
@@ -109,6 +110,7 @@ class ProfileCreateView(APIView):
         else:
             return Http404()
 
+    @staticmethod
     def post(self, request, format=None):
         serializers = ProfileSerializer(data=request.data)
         if serializers.is_valid():
@@ -179,7 +181,7 @@ class BussinessListCreateView(APIView):
         return Response(serializers.data)
 
     def post(self, request, format=None):
-        if request.user.is_staff == True:
+        if request.user.is_staff == True & request.user.is_superuser == False:
             serializers = BussinessSerializer(data=request.data)
             if serializers.is_valid():
                 serializers.save()
@@ -202,7 +204,7 @@ class EmergencyServiceListCreateView(APIView):
         return Response(serializers.data)
 
     def post(self, request, format=None):
-        if request.user.is_staff == True:
+        if request.user.is_staff == True & request.user.is_superuser == False:
             serializers = EmergencyServiceSerializer(data=request.data)
             if serializers.is_valid():
                 serializers.save()

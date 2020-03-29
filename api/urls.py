@@ -10,5 +10,7 @@ urlpatterns = [
     path('hood/<int:id>/', HoodDetailsView.as_view(), name='specifichood'),
     path('profiles/', ProfileCreateView.as_view(), name='profiles'),
     path('profile/<int:id>', ProfileDetailsView.as_view(), name='specificprofile'),
-    
+    path('posts/', PostListCreateView.as_view(), name='posts'),
+    path('bussinesses/', BussinessListCreateView.as_view(), name='bussinesses'),
+    path('services/', EmergencyServiceListCreateView.as_view(), name='emergencyservice'),
 ]

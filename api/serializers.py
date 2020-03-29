@@ -15,9 +15,9 @@ class UserSerializer(serializers.ModelSerializer):
 class HoodSerializer(serializers.ModelSerializer):
     '''Serializer for Hood Model'''
     admin = serializers.StringRelatedField(read_only=True)
-    class meta:
+    class Meta:
         model = Hood
-        fields = '__all__'
+        exclude = ['id','occupants_count']
 
 class ProfileSerializer(serializers.ModelSerializer):
     '''Serializer for profile Model'''
@@ -25,7 +25,7 @@ class ProfileSerializer(serializers.ModelSerializer):
     hood = serializers.StringRelatedField(read_only=True)
     class Meta:
         model = Profile
-        fields = '__all__'
+        exclude = ['id']
 
 class PostSerializer(serializers.ModelSerializer):
     '''Serializer for Post Model'''
@@ -33,14 +33,14 @@ class PostSerializer(serializers.ModelSerializer):
     hood = serializers.StringRelatedField(read_only=True)
     class Meta:
         model = Post
-        fields = '__all__'
+        exclude = ['id', 'pub_date']
 
 class BussinessSerializer(serializers.ModelSerializer):
     '''Serializer for Bussiness class'''
     hood = serializers.StringRelatedField(read_only=True)
     class Meta:
         model = Bussiness
-        fields = '__all__'
+        exclude = ['id']
 
 
 class EmergencyServiceSerializer(serializers.ModelSerializer):
@@ -48,4 +48,4 @@ class EmergencyServiceSerializer(serializers.ModelSerializer):
     hood = serializers.StringRelatedField(read_only=True)
     class Meta:
         model = EmergencyService
-        fields = '__all__'
+        exclude = ['id']

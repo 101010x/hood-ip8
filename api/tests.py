@@ -1,5 +1,6 @@
 from django.test import TestCase
 from .models import Profile, Hood, Post, Bussiness, User, EmergencyService
+from .serializers import HoodSerializer
 import cloudinary
 
 # Model Tests
@@ -239,3 +240,35 @@ class TestEmergencyService(TestCase):
         self.test_service.update_class(name='Makueni Police')
         service = EmergencyService.objects.get(id=self.test_service.id)
         self.assertEqual(self.test_service.name, service.name)
+
+
+
+# Tests for serializers
+class HoodSerializerTest(TestCase):
+    '''Test class for Hood Serializer'''
+    def setUp(self):
+        '''Prepare before every test case'''
+        self.test_user = User(username='test', email='test@test.com', password='test2020', is_staff=True)
+        self.test_user.save()
+        # data params for the serializer
+        self.hood_attributes = {
+            'hood_name': 'Langata',
+            'location': 'Nairobi',
+            'admin': self.test_user,
+        }
+
+        self.hood = Hood.objects.create(**self.hood_attributes)
+        self.serializer = HoodSerializer(instance=self.hood)
+
+    def test_contains_expected_fields(self):
+        '''Assert that serializer has exact attributes'''
+        data = self.serializer.data
+
+        self.assertCountEqual(data.keys(), ['hood_name','location', 'admin'])
+
+    def test__field_contents(self):
+        '''Test the contents of the fields have the expected data'''
+        data = self.serializer.data
+
+        self.assertEqual(data['hood_name'], self.hood_attributes['hood_name'])
+        self.assertEqual(data['location'], self.hood_attributes['location'])
