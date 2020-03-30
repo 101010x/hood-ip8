@@ -41,8 +41,8 @@ class HoodCreateView(APIView):
             serializers = HoodSerializer(data=request.data)
             if serializers.is_valid():
                 serializers.save()
-                return Response(serialiazers.data, status=status.HTTP_201_CREATED)
-            return Response(serialiazers.errors, status=status.HTTP_400_BAD_REQUEST)
+                return Response(serializers.data, status=status.HTTP_201_CREATED)
+            return Response(serializers.errors, status=status.HTTP_400_BAD_REQUEST)
         else:
             return Http404
 
@@ -71,7 +71,7 @@ class HoodDetailsView(APIView):
 
     # Hood admin permission
     def put(self, request, id, format=None):
-        if request.user.is_staff == True:   
+        if request.user.is_staff == True & request.user.is_superuser == False:   
             hood = self.get_hood(id)
             if hood.admin == request.user:
                 serializers = HoodSerializer(hood, request.data)
@@ -80,6 +80,9 @@ class HoodDetailsView(APIView):
                     return Response(serializers.data)
                 else:
                     return Response(serializers.errors, status=status.HTTP_400_BAD_REQUEST)
+            else:
+                return Response('User is not the admin of this hood')
+                return Http404()
         else:
             return Response('User does not have permission')
             return Http404()
@@ -95,6 +98,60 @@ class HoodDetailsView(APIView):
             return Http404()
 
 
+class UpdateHoodAdminView(APIView):
+    '''Class view to update the hood admin'''
+    permission_classes = [IsAdminUser]
+
+    def get_hood(self, id):
+        try:
+            return Hood.objects.get(pk = id)
+        except Hood.DoesNotExist:
+            return Http404
+
+    def get_user(self, search_name):
+        try:
+            return Profile.objects.get(username = search_name)
+        except Profile.DoesNotExist:
+            return Http404()
+
+    # Permission class for superuser only
+    def put(self, request, id, search_name, format=None):
+        if  request.user.is_staff == True & request.user.is_superuser == True:
+            hood = self.get_hood(id)
+            user = get_user(search_name)
+            serializers = HoodSerializer(hood, request.data)
+            if serializers.is_valid():
+                serializers.save(admin = user)
+                return Response(serializers.data)
+            else:
+                return Response(serializers.errors, status=status.HTTP_400_BAD_REQUEST)
+        else:
+            return Response('User does not have permission')
+            return Http404()
+
+class UpdateHoodOptionJoinView(APIView):
+    '''Class view for user joining a hood'''
+    permission_classes = [IsAuthenticated]
+
+    def get_hood(self, id):
+        try:
+            return Hood.objects.get(pk = id)
+        except Hood.DoesNotExist:
+            return Http404
+
+    def put(self, request, hood_id, user_id, format=None):
+        hood = get_hood(hood_id)
+        profile = Profile.objects.get(user=request.user)
+        serializers = ProfileSerializer(profile, request.data)
+        if serializers.is_valid():
+            serializers.save(hood=hood)
+            return Response(serializers.data)
+        else:
+            return Response(serializers.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+
+
 
 #Profile
 class ProfileCreateView(APIView):
@@ -105,7 +162,7 @@ class ProfileCreateView(APIView):
     def get(self, request, format=None):
         if request.user.is_superuser == True:
             all_profiles = Profile.objects.all()
-            serializers = ProfileSerializer(all_profiles)
+            serializers = ProfileSerializer(all_profiles, many=True)
             return Response(serializers.data)
         else:
             return Http404()
@@ -115,8 +172,8 @@ class ProfileCreateView(APIView):
         serializers = ProfileSerializer(data=request.data)
         if serializers.is_valid():
             serializers.save()
-            return Response(serialiazers.data, status=status.HTTP_201_CREATED)
-        return Response(serialiazers.errors, status=status.HTTP_400_BAD_REQUEST)
+            return Response(serializers.data, status=status.HTTP_201_CREATED)
+        return Response(serializers.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class ProfileDetailsView(APIView):
     '''Class view for a specific profile'''
@@ -129,7 +186,7 @@ class ProfileDetailsView(APIView):
             return Http404()
 
     def get(self, request, id, format=None):
-        user = User.objects.get(id = id)
+        user = User.objects.get(pk = id)
         if request.user == user:
             profile = get_profile(id)
             serializers = ProfileSerializer(profile)
@@ -159,7 +216,7 @@ class PostListCreateView(APIView):
 
     def get(self, request, format=None):
         all_posts = Post.objects.all()
-        serializers = PostSerializer(all_posts)
+        serializers = PostSerializer(all_posts, many=True)
         return Response(serializers.data)
 
     def post(self, request, format=None):
@@ -177,7 +234,7 @@ class BussinessListCreateView(APIView):
 
     def get(self, request, format=None):
         all_bussinesses = Bussiness.objects.all()
-        serializers = BussinessSerializer(all_bussinesses)
+        serializers = BussinessSerializer(all_bussinesses, many=True)
         return Response(serializers.data)
 
     def post(self, request, format=None):
@@ -200,7 +257,7 @@ class EmergencyServiceListCreateView(APIView):
 
     def get(self, request, format=None):
         all_services = EmergencyService.objects.all()
-        serializers = EmergencyServiceSerializer(all_services)
+        serializers = EmergencyServiceSerializer(all_services, many=True)
         return Response(serializers.data)
 
     def post(self, request, format=None):

@@ -2,6 +2,13 @@ from rest_framework import serializers
 from .models import User, Post, Profile, Hood, EmergencyService, Bussiness
 from django.contrib.auth.hashers import make_password
 
+
+
+def required(value):
+    '''Function to have a field as required'''
+    if value is None:
+        raise serializers.ValidationError('This field is required')
+
 class UserSerializer(serializers.ModelSerializer):
     '''Serializer for user Model'''
     email = serializers.EmailField()
@@ -15,9 +22,10 @@ class UserSerializer(serializers.ModelSerializer):
 class HoodSerializer(serializers.ModelSerializer):
     '''Serializer for Hood Model'''
     admin = serializers.StringRelatedField(read_only=True)
+    location = serializers.CharField(validators=[required])
     class Meta:
         model = Hood
-        exclude = ['id','occupants_count']
+        fields = '__all__'
 
 class ProfileSerializer(serializers.ModelSerializer):
     '''Serializer for profile Model'''
@@ -25,7 +33,7 @@ class ProfileSerializer(serializers.ModelSerializer):
     hood = serializers.StringRelatedField(read_only=True)
     class Meta:
         model = Profile
-        exclude = ['id']
+        fields = '__all__'
 
 class PostSerializer(serializers.ModelSerializer):
     '''Serializer for Post Model'''
@@ -33,14 +41,14 @@ class PostSerializer(serializers.ModelSerializer):
     hood = serializers.StringRelatedField(read_only=True)
     class Meta:
         model = Post
-        exclude = ['id', 'pub_date']
+        fields = '__all__'
 
 class BussinessSerializer(serializers.ModelSerializer):
     '''Serializer for Bussiness class'''
     hood = serializers.StringRelatedField(read_only=True)
     class Meta:
         model = Bussiness
-        exclude = ['id']
+        fields = '__all__'
 
 
 class EmergencyServiceSerializer(serializers.ModelSerializer):
@@ -48,4 +56,4 @@ class EmergencyServiceSerializer(serializers.ModelSerializer):
     hood = serializers.StringRelatedField(read_only=True)
     class Meta:
         model = EmergencyService
-        exclude = ['id']
+        fields = '__all__'
