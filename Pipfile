@@ -16,6 +16,7 @@ python-decouple = "*"
 psycopg2 = "*"
 cloudinary = "*"
 djangorestframework-simplejwt = "*"
+whitenoise = "*"
 
 [requires]
 python_version = "3.6"
