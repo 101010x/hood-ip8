@@ -50,15 +50,15 @@ class HoodDetailsView(APIView):
     '''Class view for a specific hood'''
     permission_classes = [IsAuthenticated] 
 
-    def get_hood(self, id):
+    def get_hood(self, search_term):
         try:
-            return Hood.objects.get(pk = id)
+            return Hood.objects.get(hood_name=search_term)
         except Hood.DoesNotExist:
             return Http404
     
     #Only allow hood members
-    def get(self, request, id, format=None):
-        hood = self.get_hood(id)
+    def get(self, request, search_term, format=None):
+        hood = self.get_hood(search_term)
         profile = Profile.objects.get(user=request.user)
         if profile.hood == hood:
             serializers = HoodSerializer(hood)
@@ -70,9 +70,9 @@ class HoodDetailsView(APIView):
             return Http404()
 
     # Hood admin permission
-    def put(self, request, id, format=None):
+    def put(self, request, search_term, format=None):
         if request.user.is_staff == True & request.user.is_superuser == False:   
-            hood = self.get_hood(id)
+            hood = self.get_hood(search_term)
             if hood.admin == request.user:
                 serializers = HoodSerializer(hood, request.data)
                 if serializers.is_valid():
@@ -88,9 +88,9 @@ class HoodDetailsView(APIView):
             return Http404()
     
     #Hood superuser permission
-    def delete(self, request, id, format=None):
+    def delete(self, request, search_term, format=None):
         if request.user.is_superuser == True:
-            hood = self.get_hood(id)
+            hood = self.get_hood(search_term)
             hood.delete()
             return Response(status=status.HTTP_204_NO_CONTENT)
         else:
@@ -102,9 +102,9 @@ class UpdateHoodAdminView(APIView):
     '''Class view to update the hood admin'''
     permission_classes = [IsAdminUser]
 
-    def get_hood(self, id):
+    def get_hood(self, hood_name):
         try:
-            return Hood.objects.get(pk = id)
+            return Hood.objects.get(hood_name=hood_name)
         except Hood.DoesNotExist:
             return Http404
 
@@ -115,10 +115,10 @@ class UpdateHoodAdminView(APIView):
             return Http404()
 
     # Permission class for superuser only
-    def put(self, request, id, search_name, format=None):
+    def put(self, request, hood_name, user_name, format=None):
         if  request.user.is_staff == True & request.user.is_superuser == True:
-            hood = self.get_hood(id)
-            user = get_user(search_name)
+            hood = self.get_hood(hood_name)
+            user = get_user(user_name)
             serializers = HoodSerializer(hood, request.data)
             if serializers.is_valid():
                 serializers.save(admin = user)
@@ -133,18 +133,26 @@ class UpdateHoodOptionJoinView(APIView):
     '''Class view for user joining a hood'''
     permission_classes = [IsAuthenticated]
 
-    def get_hood(self, id):
+    def get_hood(self, search_term):
         try:
-            return Hood.objects.get(pk = id)
+            return Hood.objects.get(hood_name=search_term)
         except Hood.DoesNotExist:
             return Http404
 
-    def put(self, request, hood_id, user_id, format=None):
-        hood = get_hood(hood_id)
+    def get_user(self, search_term):
+        try:
+            return User.objects.get(username=search_term)
+        except User.DoesNotExist:
+            return Http404
+
+
+    def put(self, request, hood_name, user_name, format=None):
+        hood = get_hood(hood_name)
+        user = get_user(user_name)
         profile = Profile.objects.get(user=request.user)
         serializers = ProfileSerializer(profile, request.data)
         if serializers.is_valid():
-            serializers.save(hood=hood)
+            serializers.save(hood=hood, user=user)
             return Response(serializers.data)
         else:
             return Response(serializers.errors, status=status.HTTP_400_BAD_REQUEST)
@@ -179,25 +187,25 @@ class ProfileDetailsView(APIView):
     '''Class view for a specific profile'''
     permission_classes = [IsAuthenticated]
     
-    def get_profile(self,id):
+    def get_profile(self,search_name):
         try:
-            return Profile.objects.get(pk=id)
+            return Profile.objects.get(name=search_name)
         except Profile.DoesNotExist:
             return Http404()
 
-    def get(self, request, id, format=None):
-        user = User.objects.get(pk = id)
+    def get(self, request, user_name, format=None):
+        user = User.objects.get(username = user_name)
         if request.user == user:
-            profile = get_profile(id)
+            profile = get_profile(user_name)
             serializers = ProfileSerializer(profile)
             return Response(serializers.data)
         else:
             return Http404()
 
-    def put(self, request, id, format=None):
-        user = User.objects.get(id = id)
+    def put(self, request, user_name, format=None):
+        user = User.objects.get(username = user_name)
         if request.user == user:
-            profile = get_profile(id)
+            profile = get_profile(user_name)
             serializers = ProfileSerializer(profile, request.data)
             if serializers.is_valid():
                 serializers.save()
