@@ -2,7 +2,7 @@ from django.shortcuts import render, Http404
 from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework.permissions import AllowAny, IsAuthenticated, IsAdminUser, IsAuthenticatedOrReadOnly
+from rest_framework.permissions import AllowAny, IsAuthenticated, IsAdminUser
 from rest_framework.parsers import FileUploadParser
 import cloudinary.uploader
 from .serializers import *
@@ -48,7 +48,7 @@ class HoodCreateView(APIView):
 
 class HoodDetailsView(APIView):
     '''Class view for a specific hood'''
-    permission_classes = [IsAuthenticated] 
+    permission_classes = [] 
 
     def get_hood(self, search_term):
         try:
@@ -131,7 +131,7 @@ class UpdateHoodAdminView(APIView):
 
 class UpdateHoodOptionJoinView(APIView):
     '''Class view for user joining a hood'''
-    permission_classes = [IsAuthenticated]
+    permission_classes = []
 
     def get_hood(self, search_term):
         try:
@@ -164,7 +164,7 @@ class UpdateHoodOptionJoinView(APIView):
 #Profile
 class ProfileCreateView(APIView):
     '''Class view to create a profile'''
-    permission_classes = [IsAuthenticated]
+    permission_classes = []
     parser_classes = [FileUploadParser]
 
     def get(self, request, format=None):
@@ -185,7 +185,7 @@ class ProfileCreateView(APIView):
 
 class ProfileDetailsView(APIView):
     '''Class view for a specific profile'''
-    permission_classes = [IsAuthenticated]
+    permission_classes = []
     
     def get_profile(self,search_name):
         try:
@@ -220,7 +220,7 @@ class ProfileDetailsView(APIView):
 #Post
 class PostListCreateView(APIView):
     '''Class view for the Post Class'''
-    permission_classes = [IsAuthenticated]
+    permission_classes = []
 
     def get(self, request, format=None):
         all_posts = Post.objects.all()
@@ -238,7 +238,7 @@ class PostListCreateView(APIView):
 #Bussiness
 class BussinessListCreateView(APIView):
     '''Class view for the Bussiness Class'''
-    permission_classes = [IsAuthenticated]
+    permission_classes = []
 
     def get(self, request, format=None):
         all_bussinesses = Bussiness.objects.all()
@@ -261,7 +261,7 @@ class BussinessListCreateView(APIView):
 #EmergencyService
 class EmergencyServiceListCreateView(APIView):
     '''Class view for the Emergency Service class'''
-    permission_classes = [IsAuthenticated]
+    permission_classes = []
 
     def get(self, request, format=None):
         all_services = EmergencyService.objects.all()
