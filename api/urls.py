@@ -11,8 +11,8 @@ urlpatterns = [
     path('join/<str:hood_name>/<str:user_name>', UpdateHoodOptionJoinView.as_view(), name='joinhood'),
     path('admin/set/<str:hood_name>/<str:user_name>', UpdateHoodAdminView.as_view(), name='sethoodadmin'),
     path('profiles/', ProfileCreateView.as_view(), name='profiles'),
-    path('profile/<str:user_name>', ProfileDetailsView.as_view(), name='specificprofile'),
-    path('posts/', PostListCreateView.as_view(), name='posts'),
-    path('bussinesses/', BussinessListCreateView.as_view(), name='bussinesses'),
-    path('services/', EmergencyServiceListCreateView.as_view(), name='emergencyservice'),
+    path('profile/<str:user_name>/', ProfileDetailsView.as_view(), name='specificprofile'),
+    path('posts/<str:filter_name>/', PostListCreateView.as_view(), name='posts'),
+    path('bussinesses/<str:filter_name>/', BussinessListCreateView.as_view(), name='bussinesses'),
+    path('services/<str:filter_name>/', EmergencyServiceListCreateView.as_view(), name='emergencyservice'),
 ]

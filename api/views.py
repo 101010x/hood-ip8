@@ -24,7 +24,7 @@ class RegisterUser(APIView):
 #Hood
 class HoodCreateView(APIView):
     '''Class view to get a list of views & post a new hood'''
-    permission_classes = []
+    permission_classes = [IsAuthenticated]
 
     def get(self, request, format=None):
         '''To get all the hoods'''
@@ -46,7 +46,7 @@ class HoodCreateView(APIView):
 
 class HoodDetailsView(APIView):
     '''Class view for a specific hood'''
-    permission_classes = [] 
+    permission_classes = [IsAuthenticated] 
 
     def get_hood(self, search_term):
         try:
@@ -129,7 +129,7 @@ class UpdateHoodAdminView(APIView):
 
 class UpdateHoodOptionJoinView(APIView):
     '''Class view for user joining a hood'''
-    permission_classes = []
+    permission_classes = [IsAuthenticated]
 
     def get_hood(self, search_term):
         try:
@@ -163,7 +163,7 @@ class UpdateHoodOptionJoinView(APIView):
 #Profile
 class ProfileCreateView(APIView):
     '''Class view to create a profile'''
-    permission_classes = []
+    permission_classes = [IsAuthenticated]
     parser_classes = [FileUploadParser]
 
     def get(self, request, format=None):
@@ -184,7 +184,7 @@ class ProfileCreateView(APIView):
 
 class ProfileDetailsView(APIView):
     '''Class view for a specific profile'''
-    permission_classes = []
+    permission_classes = [IsAuthenticated]
     
     def get_profile(self,search_name):
         try:
@@ -219,10 +219,10 @@ class ProfileDetailsView(APIView):
 #Post
 class PostListCreateView(APIView):
     '''Class view for the Post Class'''
-    permission_classes = []
+    permission_classes = [IsAuthenticated]
 
-    def get(self, request, format=None):
-        all_posts = Post.objects.all()
+    def get(self, request, filter_name, format=None):
+        all_posts = Post.objects.get(hood=filter_name)
         serializers = PostSerializer(all_posts, many=True)
         return Response(serializers.data)
 
@@ -237,10 +237,10 @@ class PostListCreateView(APIView):
 #Bussiness
 class BussinessListCreateView(APIView):
     '''Class view for the Bussiness Class'''
-    permission_classes = []
+    permission_classes = [IsAuthenticated]
 
-    def get(self, request, format=None):
-        all_bussinesses = Bussiness.objects.all()
+    def get(self, request, filter_name, format=None):
+        all_bussinesses = Bussiness.objects.get(hood=filter_name)
         serializers = BussinessSerializer(all_bussinesses, many=True)
         return Response(serializers.data)
 
@@ -260,10 +260,10 @@ class BussinessListCreateView(APIView):
 #EmergencyService
 class EmergencyServiceListCreateView(APIView):
     '''Class view for the Emergency Service class'''
-    permission_classes = []
+    permission_classes = [IsAuthenticated]
 
-    def get(self, request, format=None):
-        all_services = EmergencyService.objects.all()
+    def get(self, request, filter_name, format=None):
+        all_services = EmergencyService.objects.get(hood=filter_name)
         serializers = EmergencyServiceSerializer(all_services, many=True)
         return Response(serializers.data)
 
