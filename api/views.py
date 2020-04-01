@@ -149,7 +149,7 @@ class UpdateHoodOptionJoinView(APIView):
     def put(self, request, hood_name, user_name, format=None):
         hood = self.get_hood(hood_name)
         user = self.get_user(user_name)
-        profile = Profile.objects.get(user=request.user)
+        profile = Profile.objects.get(name=user_name)
         serializers = ProfileSerializer(profile, request.data)
         if serializers.is_valid():
             serializers.save(hood=hood, user=user)
