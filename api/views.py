@@ -118,7 +118,7 @@ class UpdateHoodAdminView(APIView):
     def put(self, request, hood_name, user_name, format=None):
         if  request.user.is_staff == True & request.user.is_superuser == True:
             hood = self.get_hood(hood_name)
-            user = get_user(user_name)
+            user = self.get_user(user_name)
             serializers = HoodSerializer(hood, request.data)
             if serializers.is_valid():
                 serializers.save(admin = user)
@@ -147,8 +147,8 @@ class UpdateHoodOptionJoinView(APIView):
 
 
     def put(self, request, hood_name, user_name, format=None):
-        hood = get_hood(hood_name)
-        user = get_user(user_name)
+        hood = self.get_hood(hood_name)
+        user = self.get_user(user_name)
         profile = Profile.objects.get(user=request.user)
         serializers = ProfileSerializer(profile, request.data)
         if serializers.is_valid():
@@ -196,7 +196,7 @@ class ProfileDetailsView(APIView):
     def get(self, request, user_name, format=None):
         user = User.objects.get(username = user_name)
         if request.user == user:
-            profile = get_profile(user_name)
+            profile = self.get_profile(user_name)
             serializers = ProfileSerializer(profile)
             return Response(serializers.data)
         else:
@@ -205,7 +205,7 @@ class ProfileDetailsView(APIView):
     def put(self, request, user_name, format=None):
         user = User.objects.get(username = user_name)
         if request.user == user:
-            profile = get_profile(user_name)
+            profile = self.get_profile(user_name)
             serializers = ProfileSerializer(profile, request.data)
             if serializers.is_valid():
                 serializers.save()
