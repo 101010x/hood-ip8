@@ -24,16 +24,14 @@ class RegisterUser(APIView):
 #Hood
 class HoodCreateView(APIView):
     '''Class view to get a list of views & post a new hood'''
-    permission_classes = [IsAdminUser]
+    permission_classes = []
 
     def get(self, request, format=None):
         '''To get all the hoods'''
-        if request.user.is_superuser == True:
-            all_hoods = Hood.objects.all()
-            serializers = HoodSerializer(all_hoods, many=True)
-            return Response(serializers.data)
-        else:
-            return Http404
+        all_hoods = Hood.objects.all()
+        serializers = HoodSerializer(all_hoods, many=True)
+        return Response(serializers.data)
+        
 
     def post(self, request, format=None):
         '''Creating a new Hood'''
@@ -150,9 +148,10 @@ class UpdateHoodOptionJoinView(APIView):
         hood = self.get_hood(hood_name)
         user = self.get_user(user_name)
         profile = Profile.objects.get(name=user_name)
+        count = hood.occupants_count + 1
         serializers = ProfileSerializer(profile, request.data)
         if serializers.is_valid():
-            serializers.save(hood=hood, user=user)
+            serializers.save(hood=hood, user=user, occupants_count=count)
             return Response(serializers.data)
         else:
             return Response(serializers.errors, status=status.HTTP_400_BAD_REQUEST)
@@ -195,7 +194,7 @@ class ProfileDetailsView(APIView):
 
     def get(self, request, user_name, format=None):
         user = User.objects.get(username = user_name)
-        if request.user == user:
+        if user is not None:
             profile = self.get_profile(user_name)
             serializers = ProfileSerializer(profile)
             return Response(serializers.data)
@@ -204,7 +203,7 @@ class ProfileDetailsView(APIView):
 
     def put(self, request, user_name, format=None):
         user = User.objects.get(username = user_name)
-        if request.user == user:
+        if user is not None:
             profile = self.get_profile(user_name)
             serializers = ProfileSerializer(profile, request.data)
             if serializers.is_valid():
