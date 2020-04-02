@@ -228,7 +228,7 @@ class PostListCreateView(APIView):
 
     def get(self, request, filter_name, format=None):
         user_hood = self.get_hood(filter_name)
-        all_posts = Post.objects.get(hood=user_hood)
+        all_posts = Post.objects.filter(hood=user_hood)
         serializers = PostSerializer(all_posts, many=True)
         return Response(serializers.data)
 
@@ -254,7 +254,7 @@ class BussinessListCreateView(APIView):
 
     def get(self, request, filter_name, format=None):
         user_hood = self.get_hood(filter_name)
-        all_bussinesses = Bussiness.objects.get(hood=user_hood)
+        all_bussinesses = Bussiness.objects.filter(hood=user_hood)
         serializers = BussinessSerializer(all_bussinesses, many=True)
         return Response(serializers.data)
 
@@ -279,7 +279,7 @@ class EmergencyServiceListCreateView(APIView):
 
     def get_hood(self, search_term):
         try:
-            return Hood.objects.get(hood_name=search_term)
+            return Hood.objects.filter(hood_name=search_term)
         except Hood.DoesNotExist:
             return Http404
 
