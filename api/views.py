@@ -227,13 +227,13 @@ class PostListCreateView(APIView):
             return Http404
 
     def get(self, request, filter_name, format=None):
-        user_hood = get_hood(filter_name)
+        user_hood = self.get_hood(filter_name)
         all_posts = Post.objects.get(hood=user_hood)
         serializers = PostSerializer(all_posts, many=True)
         return Response(serializers.data)
 
-    def post(self, request, format=None):
-        user_hood = get_hood(filter_name)
+    def post(self, request, filter_name, format=None):
+        user_hood = self.get_hood(filter_name)
         serializers = PostSerializer(data=request.data)
         if serializers.is_valid():
             serializers.save(user=request.user, hood=user_hood)
@@ -253,13 +253,13 @@ class BussinessListCreateView(APIView):
             return Http404
 
     def get(self, request, filter_name, format=None):
-        user_hood = get_hood(filter_name)
+        user_hood = self.get_hood(filter_name)
         all_bussinesses = Bussiness.objects.get(hood=user_hood)
         serializers = BussinessSerializer(all_bussinesses, many=True)
         return Response(serializers.data)
 
-    def post(self, request, format=None):
-        user_hood = get_hood(filter_name)
+    def post(self, request, filter_name, format=None):
+        user_hood = self.get_hood(filter_name)
         if request.user.is_staff == True:
             serializers = BussinessSerializer(data=request.data)
             if serializers.is_valid():
@@ -284,13 +284,13 @@ class EmergencyServiceListCreateView(APIView):
             return Http404
 
     def get(self, request, filter_name, format=None):
-        user_hood = get_hood(filter_name)
+        user_hood = self.get_hood(filter_name)
         all_services = EmergencyService.objects.get(hood=user_hood)
         serializers = EmergencyServiceSerializer(all_services, many=True)
         return Response(serializers.data)
 
-    def post(self, request, format=None):
-        user_hood = get_hood(filter_name)
+    def post(self, request, filter_name, format=None):
+        user_hood = self.get_hood(filter_name)
         if request.user.is_staff == True:
             serializers = EmergencyServiceSerializer(data=request.data)
             if serializers.is_valid():
