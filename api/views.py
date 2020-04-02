@@ -220,15 +220,23 @@ class PostListCreateView(APIView):
     '''Class view for the Post Class'''
     permission_classes = [IsAuthenticated]
 
+    def get_hood(self, search_term):
+        try:
+            return Hood.objects.get(hood_name=search_term)
+        except Hood.DoesNotExist:
+            return Http404
+
     def get(self, request, filter_name, format=None):
-        all_posts = Post.objects.get(hood=filter_name)
+        user_hood = get_hood(filter_name)
+        all_posts = Post.objects.get(hood=user_hood)
         serializers = PostSerializer(all_posts, many=True)
         return Response(serializers.data)
 
     def post(self, request, format=None):
+        user_hood = get_hood(filter_name)
         serializers = PostSerializer(data=request.data)
         if serializers.is_valid():
-            serializers.save()
+            serializers.save(user=request.user, hood=user_hood)
             return Response(serializers.data, status=status.HTTP_201_CREATED)
         return Response(serializers.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -238,16 +246,24 @@ class BussinessListCreateView(APIView):
     '''Class view for the Bussiness Class'''
     permission_classes = [IsAuthenticated]
 
+    def get_hood(self, search_term):
+        try:
+            return Hood.objects.get(hood_name=search_term)
+        except Hood.DoesNotExist:
+            return Http404
+
     def get(self, request, filter_name, format=None):
-        all_bussinesses = Bussiness.objects.get(hood=filter_name)
+        user_hood = get_hood(filter_name)
+        all_bussinesses = Bussiness.objects.get(hood=user_hood)
         serializers = BussinessSerializer(all_bussinesses, many=True)
         return Response(serializers.data)
 
     def post(self, request, format=None):
-        if request.user.is_staff == True & request.user.is_superuser == False:
+        user_hood = get_hood(filter_name)
+        if request.user.is_staff == True:
             serializers = BussinessSerializer(data=request.data)
             if serializers.is_valid():
-                serializers.save()
+                serializers.save(hood=user_hood)
                 return Response(serializers.data, status=status.HTTP_201_CREATED)
             return Response(serializers.errors, status=status.HTTP_400_BAD_REQUEST)
         else:
@@ -261,16 +277,24 @@ class EmergencyServiceListCreateView(APIView):
     '''Class view for the Emergency Service class'''
     permission_classes = [IsAuthenticated]
 
+    def get_hood(self, search_term):
+        try:
+            return Hood.objects.get(hood_name=search_term)
+        except Hood.DoesNotExist:
+            return Http404
+
     def get(self, request, filter_name, format=None):
-        all_services = EmergencyService.objects.get(hood=filter_name)
+        user_hood = get_hood(filter_name)
+        all_services = EmergencyService.objects.get(hood=user_hood)
         serializers = EmergencyServiceSerializer(all_services, many=True)
         return Response(serializers.data)
 
     def post(self, request, format=None):
-        if request.user.is_staff == True & request.user.is_superuser == False:
+        user_hood = get_hood(filter_name)
+        if request.user.is_staff == True:
             serializers = EmergencyServiceSerializer(data=request.data)
             if serializers.is_valid():
-                serializers.save()
+                serializers.save(hood=user_hood)
                 return Response(serializers.data, status=status.HTTP_201_CREATED)
             return Response(serializers.errors, status=status.HTTP_400_BAD_REQUEST)
         else:
