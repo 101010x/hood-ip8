@@ -177,8 +177,9 @@ class ProfileCreateView(APIView):
     @staticmethod
     def post(self, request, format=None):
         serializers = ProfileSerializer(data=request.data)
+        user = request.user
         if serializers.is_valid():
-            serializers.save()
+            serializers.save(user=user)
             return Response(serializers.data, status=status.HTTP_201_CREATED)
         return Response(serializers.errors, status=status.HTTP_400_BAD_REQUEST)
 
