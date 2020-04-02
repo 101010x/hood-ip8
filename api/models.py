@@ -69,7 +69,6 @@ class Post(models.Model, CrudMethods):
     '''Model table for posts that are created by the user'''
     post_title = models.CharField(max_length=100)
     post_content = models.TextField()
-    post_image = CloudinaryField('image')
     pub_date = models.DateField(auto_now_add=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='userpost')
     hood = models.ForeignKey(Hood, on_delete=models.CASCADE, related_name='hoodposts')

@@ -164,7 +164,6 @@ class UpdateHoodOptionJoinView(APIView):
 class ProfileCreateView(APIView):
     '''Class view to create a profile'''
     permission_classes = [IsAuthenticated]
-    parser_classes = [FileUploadParser]
 
     def get(self, request, format=None):
         if request.user.is_superuser == True:
@@ -174,7 +173,6 @@ class ProfileCreateView(APIView):
         else:
             return Http404()
 
-    @staticmethod
     def post(self, request, format=None):
         serializers = ProfileSerializer(data=request.data)
         user = request.user
