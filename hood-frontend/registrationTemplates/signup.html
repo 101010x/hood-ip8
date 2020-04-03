@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Hood</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body>
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container">
+      <a class="navbar-brand" href="../index.html">Hood</a>
+    </div>
+  </nav>
+  <div class="container">
+    <div class="row">
+      <div class="col-md-5 mx-auto">
+        <div id="second">
+          <div class="myform form ">
+            <div class="logo mb-3">
+              <div class="col-md-12 text-center">
+                <h1>Signup</h1>
+              </div>
+            </div>
+            <div class="alert alert-primary alert-dismissible" role="alert" id="messagesinfo" style="display: none;"></div>
+            <form id="signupform">
+              <div class="form-group">
+                <label for="exampleInputEmail1">Username</label>
+                <input type="text" name="username" class="form-control" id="username" aria-describedby="emailHelp"
+                  placeholder="Enter Username" required>
+              </div>
+              <div class="form-group">
+                <label for="exampleInputEmail1">Email address</label>
+                <input type="email" name="email" class ="form-control" id="email" aria-describedby="emailHelp"
+                  placeholder="Enter email" required>
+              </div>
+              <div class="form-group">
+                <label for="exampleInputEmail1">Password</label>
+                <input type="password" name="password" id="password" class="form-control" aria-describedby="emailHelp"
+                  placeholder="Enter Password" required>
+              </div>
+              <div class="col-md-12 text-center ">
+                <button id='signupbtn' type="submit" name="btn-login" class="btn btn-outline-secondary">Sign Up</button>
+              </div>
+            </form>
+          </div>
+          <br>
+          <div class="form-group">
+            <p class="text-center">By signing up you accept our <a
+                href="https://github.com/wendymunyasi/hood-ip8/blob/dev/LICENSE" target="blank" rel="noopener">Terms Of
+                Use</a></p>
+          </div>
+          <div class="col-md-12 ">
+            <div class="form-group">
+              <p class="text-center"><a href="login.html" id="signin">Already have an account?</a></p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</body>
+<script type="text/javascript"
+  src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script src="../js/signuphandler.js"></script>
+</html>

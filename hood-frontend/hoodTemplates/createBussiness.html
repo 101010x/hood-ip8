@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Hood</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container">
+            <a class="navbar-brand" href="../index.html">Hood</a>
+        </div>
+    </nav>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-5 mx-auto">
+                <div class="myform form ">
+                    <div class="logo mb-3">
+                        <div class="col-md-12 text-center">
+                            <h1>Add a bussiness</h1>
+                        </div>
+                    </div>
+                    <div class="alert alert-primary alert-dismissible" role="alert" id="messagesinfo"
+                        style="display: none;">
+                    </div>
+
+                    <form id="bizform">
+                        <div class="form-group">
+                            <label for="name">Username</label>
+                            <input type="text" name="name" class="form-control" id="name" aria-describedby="emailHelp"
+                              placeholder="Enter Bussiness name" required>
+                          </div>
+                          <div class="form-group">
+                            <label for="exampleInputEmail1">Email address</label>
+                            <input type="email" name="email" class ="form-control" id="email" aria-describedby="emailHelp"
+                              placeholder="Enter bussiness email" required>
+                          </div>
+                        <div class="form-group">
+                            <label for="description">Bussiness Description</label>
+                            <textarea class="form-control" id="description" rows="7" placeholder="Enter a Bussiness description"
+                                required></textarea>
+                        </div>
+                        <div class="col-md-12 text-center ">
+                            <button id='profilebtn' type="submit" name="profile-create-btn"
+                                class="btn btn-outline-secondary">Create Profile</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"
+    integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+<script type="text/javascript"
+    src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script src="../js/createBizHandler.js"></script>
+
+</html>
