@@ -1,10 +1,10 @@
 #  Awards App.
-This is a web app that allows users to post their projects and have them voted for.
+This is a web app that allows users to join various neighborhoods and create posts in those neighborhoods.
 
 ##  Getting Started
 
 ###  Prerequisites and Installing
-You need to install the following software to have the app running on your local machine for development and testing purposes. Instructions on how to install will also be provided next to the software.
+You need to install the following software to have the  Django api app running on your local machine for development and testing purposes. Instructions on how to install will also be provided next to the software.
 
 
 |Software|Installation Instructions/Terminal Commands|
@@ -23,124 +23,115 @@ You need to install the following software to have the app running on your local
 
 
 ###  Running Tests
-The test classes are divided into ProjectTestCase, ProfileTestCase and RateTestCase.
+The test classes are divided into TestAbstractUser, TestProfileClass, TestPost, TestBussiness, TestEmergencyService, HoodSerializerTest and TestHoodModel.
 
 Once you get the development server running, run the following command:
 `python3 manage.py test` which runs all the test cases one by one.
 
 Examples of tests are given below.
 
-####  ProjectTestCase
+####  TestAbstractUser
 
-      def test_project_creation(self):
-         project = self.create_project()
-         self.assertTrue(isinstance(project, Project))
-         self.assertEqual(project.__str__(), project.title)
+      def test_default_user_admin_status(self):
+        self.assertEqual(self.test_user.is_admin_status, False)
 
-The test above tests if a project was created successfully.
+The test above tests if the default user admin status is False.
 
-      def test_save_project(self):
-        self.new_user.save()
-        self.new_project.save_project()
-        projects = Project.objects.all()
-        self.assertTrue(len(projects)>0)
+      def test_change_default_user_admin_status(self):
+        self.test_user.is_admin_status = True
+        self.test_user.save()
+        self.assertEqual(self.test_user.is_admin_status, True)
 
-The test above tests if a project was saved successfully.
-
-      def test_delete_project(self):
-        self.new_user.save()
-        self.new_project.save_project()
-        self.new_project.delete_project()
-        project = Project.objects.filter(id=1).delete()
-
-The test above tests if a project was deleted successfully.
-
-    def test_update_project(self):
-        self.new_user.save()
-        self.new_project.save_project()
-        self.new_project.update_project(link='Just a link update', description='Just a description update', title='Just a title update')
-        self.assertTrue(self.new_project.link == 'Just a link update')
-        self.assertTrue(self.new_project.description == 'Just a description update')
-        self.assertTrue(self.new_project.title == 'Just a title update')
-
-The test above tests if a project was deleted successfully.
+The test above tests if a the default user admin status has been updated.
 
 
-####  ProfileTestCase
+####  TestProfileClass
 
-      def test_profile_creation(self):
-        profile = self.create_profile()
-        self.assertTrue(isinstance(profile, Profile))
-        self.assertEqual(profile.__str__(), profile.contact)
+     def test_isinstance(self):
+        self.assertTrue(isinstance(self.test_profile, Profile))
 
-The test above tests if a profile was created successfully.
+The test above tests if a profile object is an instance of the Profile class.
         
     def test_save_profile(self):
+        self.new_user = User(username='randomn',email='random@random.com', password='test2020')
         self.new_user.save()
-        self.new_profile.save_profile()
+        self.new_profile = Profile(bio = 'This is a new test bio', profile_picture='https://res.cloudinary.com/mutugiii/image/upload/v1583825081/gpnb9j7zld5isfk9s4he.jpg', location='Nairobi', user=self.new_user)
+        self.new_profile.save_class()
         profiles = Profile.objects.all()
-        self.assertTrue(len(profiles)>0)
+        self.assertTrue(len(profiles) == 2)
 
 The test above tests if a profile was saved successfully.
         
     def test_delete_profile(self):
-        self.new_user.save()
-        self.new_profile.save_profile()
-        self.new_profile.delete_profile()
-        profile = Profile.objects.filter(id=1).delete()
+        self.test_profile.delete_class()
+        profiles = Profile.objects.all()
+        self.assertTrue(len(profiles) == 0)
 
 The test above tests if a profile was deleted successfully.
         
-    def test_update_profile(self):
-        self.new_user.save()
-        self.new_profile.save_profile()
-        self.new_profile.update_profile(contact='Just a contact update', bio='Just a bio update', profile_pic='/path/example2.png')
-        self.assertTrue(self.new_profile.contact == 'Just a contact update')
-        self.assertTrue(self.new_profile.bio == 'Just a bio update')
-        self.assertTrue(self.new_profile.profile_pic == '/path/example2.png')
 
-The test above tests if a profile was updated successfully.
+####  TestHoodModel
 
+       def test_save_hood(self):
+        self.new_hood = Hood(hood_name = 'NewHood', location='Nairobi')
+        self.new_hood.save_class()
+        hoods = Hood.objects.all().count()
+        self.assertTrue(hoods == 2)
 
-####  RateTestCase
-
-       def test_save_rate(self): 
-        self.new_user.save()
-        self.new_project.save_project()
-        self.new_rate.save_rate()
-        rates = Rate.objects.all()
-        self.assertTrue(len(rates)>0)
-
-The test above tests if a rating was saved successfully.
+The test above tests if a hood was saved successfully.
         
-      def test_delete_rate(self):
-        self.new_user.save()
-        self.new_project.save_project()
-        self.new_rate.save_rate()
-        self.new_rate.delete_rate()
-        rate = Rate.objects.filter(id=1).delete()
+      def test_delete_hood(self):
+        self.test_hood.delete_class()
+        hoods = Hood.objects.all().count()
+        self.assertTrue(hoods == 0)
 
-The test above tests if a rating was deleted successfully.
+The test above tests if a hood was deleted successfully.
 
-      def test_update_rate(self):
-        self.new_user.save()
-        self.new_project.save_project()
-        self.new_rate.save_rate()
-        self.new_rate.update_rate(content=10, design=10, usability=10)
-        self.assertTrue(self.new_rate.content == 10)
-        self.assertTrue(self.new_rate.usability == 10)
-        self.assertTrue(self.new_rate.design == 10)
 
-The test above tests if a rating was updated successfully.
+####  TestPost
+
+       def test_save_post(self):
+        posts = Post.objects.all().count()
+        self.assertTrue(posts == 1)
+
+The test above tests if a post was saved successfully.
+        
+      def test_delete_post(self):
+        self.test_post.delete_class()
+        posts = Post.objects.all().count()
+        self.assertTrue(posts == 0)
+
+The test above tests if a post was deleted successfully.
+
+
+####  TestBussiness
+
+       def test_save_bussiness(self):
+        bizs = Bussiness.objects.all().count()
+        self.assertTrue(bizs == 1)
+
+The test above tests if a business was saved successfully.
+        
+      def test_delete_bussiness(self):
+        self.test_biz.delete_class()
+        bizs = Bussiness.objects.all().count()
+        self.assertTrue(bizs == 0)
+
+The test above tests if a business was deleted successfully.
+
+
 
 
 ##  Deployment
 
-Follow along with this document (https://gist.github.com/newtonkiragu/42f2500e56d9c2375a087233587eddd0) to deploy your application to Heroku.
+The application was deployed to netlify.
 
 ##  Built With
 
 *  [Django] - 3.0 (https://docs.djangoproject.com/en/3.0/)
+*  HTML
+*  CSS
+*  Javascript
 
 
 ##  Contributing
@@ -148,12 +139,12 @@ Follow along with this document (https://gist.github.com/newtonkiragu/42f2500e56
 
 Please read [CONTRIBUTING.md](https://gist.github.com/PurpleBooth/b24679402957c63ec426) for details on our code of conduct, and the process for submitting pull requests to us.
 
-##  Versioning
-
 
 ##  Authors
 
-* **Wendy Munyasi**
+* **Wendy Munyasi**  (https://github.com/wendymunyasi)
+* **Habiba Hassan**  (https://github.com/habibahassan)
+* **Mutugi Mutuma**  (https://github.com/Mutugiii)
 
 
 ##  License
@@ -167,7 +158,7 @@ This project is licensed under the MIT License.
 
 ## Api Link and description
 
-(https://awardss-api.herokuapp.com/)
+(https://hood-drf.herokuapp.com/)
 
 On loading the link above, a 404 page is displayed with the various urls.
 Select any and login with the credentials provided if asked to do so. Though I advice against using this route.
@@ -176,15 +167,17 @@ An alternative is to use **Postman** to access the api routes as the token ident
 
 ## Project-Setup Instructions.
 
-1.Open your github account and search for github username: **wendymunyasi**
+1.Open your github account and search for github username: **wendymunyasi** or use this link: (https://github.com/wendymunyasi) .
 
 1. git clone using the following links.
 
-   link: https://github.com/wendymunyasi/awards.git
+   link: https://github.com/wendymunyasi/hood-ip8.git
 
 2. For Django app, set the database to your own url then run `python3 manage.py makemigrations` and `python3 manage.py migrate`.
 3. Run the command `python3 manage.py runserver`.
-4. Click the local host link on your terminal  and navigate to the api root. Use the credentials provided to login if asked to do so.
+4. Click the local host link on your terminal and navigate to the api root.
+5. For the frontend app, navigate to the **hood-frontend** folder and serve it using vs code's live server extension.
+6. You can now start using the app.
 
 
 ## BDD
@@ -192,16 +185,15 @@ An alternative is to use **Postman** to access the api routes as the token ident
 | Behaviour | Input | Output |
 | --------- | ------| ------ |
 |On loading the app you see the landing page with login up form with a register link at the bottom of the form.| Clicking `sign up`.| You are redirected to a page where you enter your details and sign up then redirected to the login page.|
-|Enter your username and password on the login page.| Clicking `login`. |You are redirected to a page where all the projects are visible.|
-|Clicking any project's landing_page.|Mouse click.|You are redirected to a page showing just the project you clicked.|
-|Clicking `RATE PROJECT` button.|Mouse click.|You are redirected to a page with a from where you fill your ratings under **content**, **design** and **usability** in the range of 1 to 10. |
-|Clicking `VISIT SITE` button.|Mouse click.|You are redirected to the project's website.|
-|Clicking the `New Project` link on the navbar. | Mouse click. |You are redirected to a page where you enter the details of your project then post.|
-|Clicking the `Profile` link on the navbar.| Mouse click. | You are redirected to a page where you can view your profile or create your profile if you didn't have any.|
-|||
+|Enter your username and password on the login page.| Clicking `login`. | You are redirected to a page where all the projects are visible.|
+|Clicking `Hoods` link.| Mouse click.| You are redirected to a page with various neighborhoods displayed, each with a `Join Hood` link.|
+|Clicking `Join Hood` link.| Mouse click.|You are redirected to a page where you create your profile before you join the hood.|
+|Clicking the `User Hood` link on the navbar.|Mouse Click.|You are redirected to a page where you view the details of your hood and you can either `Add a Business` or `Add a Post` by clicking those links.|
+|Clicking the `Profile` link on the navbar. | Mouse click. | You are redirected to a page where you view the details of your profile.|
+|Clicking the `System Admin` link on the navbar.| Mouse click. | You are redirected to a page where you can enter your details and view the admin dashboard but only if you are an admin.|
+|Clicking the `Sign Up` link on the navbar.| Mouse Click.| You are redirected to a page where you enter your details and sign up for the app.|
+|Clicking the `Log In` link on the navbar.| Mouse Click.| You are redirected to a page where you enter your details and log in to the app.|
 
-
-## CODEBEAT
 
 
 ## The following include the list of technologies used:
@@ -211,6 +203,9 @@ An alternative is to use **Postman** to access the api routes as the token ident
 **Bootstrap**
 **PostgreSQL**
 **Django Rest Framework**
+**HTML**
+**CSS**
+**Javascript**
 
 ## Known Bugs
 
@@ -218,5 +213,7 @@ The UI isn't as user friendly.
 
 ## Collaborate
 
-To colloborate, reach me through my email address wendymunyasi@gmail.com
-
+To collaborate, reach us through the email addresses:
+*  **wendymunyasi@gmail.com**
+* **halimaadan92@gmail.com**
+* **billmutuma@gmail.com**
