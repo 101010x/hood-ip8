@@ -1,3 +1,20 @@
 {
-    "python.pythonPath": "/home/burn/.local/share/virtualenvs/rroot-neighbourhood-zS7AoVC3/bin/python"
+    "python.pythonPath": "/home/burn/.local/share/virtualenvs/rroot-neighbourhood-zS7AoVC3/bin/python",
+    "workbench.colorCustomizations": {
+        "activityBar.background": "#092f26",
+        "activityBar.activeBackground": "#092f26",
+        "activityBar.activeBorder": "#9724bb",
+        "activityBar.foreground": "#e7e7e7",
+        "activityBar.inactiveForeground": "#e7e7e799",
+        "activityBarBadge.background": "#9724bb",
+        "activityBarBadge.foreground": "#e7e7e7",
+        "titleBar.activeBackground": "#010504",
+        "titleBar.inactiveBackground": "#01050499",
+        "titleBar.activeForeground": "#e7e7e7",
+        "titleBar.inactiveForeground": "#e7e7e799",
+        "statusBar.background": "#010504",
+        "statusBarItem.hoverBackground": "#092f26",
+        "statusBar.foreground": "#e7e7e7"
+    },
+    "peacock.remoteColor": "#010504"
 }
