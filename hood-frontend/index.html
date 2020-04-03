@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Hood Watch</title>
+    <link rel="stylesheet" href="css/index.css">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato">
+    <link href="https://fonts.googleapis.com/css?family=Lobster" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css"
+        integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+</head>
+
+<body>
+    <div>
+        <div class="w3-bar w3-blue w3-card" id="myNavbar">
+            <a class="w3-bar-item w3-button w3-wide w3-hide-medium"><i class="fab fa-houzz"></i>
+                HOOD </a>
+            <!-- Right-sided navbar links -->
+            <div class="w3-right w3-hide-small">
+                <a href="hoodTemplates/hoods.html" class="w3-bar-item w3-button">Hoods</a>
+                <a class="w3-bar-item w3-button" href="hoodTemplates/hood.html"><i class="fas fa-plus"></i>User Hood</a>
+
+
+                <a class="w3-bar-item w3-button" href="profileTemplates/userprofile.html"><i class="fas fa-user"></i>
+                    Profile</a>
+
+                <!-- <a class="w3-bar-item w3-button"><i class="fas fa-user-edit"></i> Edit
+                    Profile</a> -->
+
+                <a href="https://hood-drf.herokuapp.com/admin/" class="w3-bar-item w3-button"><i
+                        class="fas fa-user-cog"></i>System Admin</a>
+
+                <!-- <a class="w3-bar-item w3-button"><i class="fas fa-sign-out-alt"></i> Logout</a> -->
+
+                <a href="registrationTemplates/signup.html" class="w3-bar-item w3-button"><i class="fas fa-sign-in-alt"></i> Sign Up</a>
+                <span>|</span>
+                <a href="registrationTemplates/login.html" class="w3-bar-item w3-button"><i class="fas fa-sign-in-alt"></i> Login</a>
+
+            </div>
+            <!-- Hide right-floated links on small screens and replace them with a menu icon -->
+
+            <a href="javascript:void(0)" class="w3-bar-item w3-button w3-right w3-hide-large w3-hide-medium"
+                onclick="w3_open()">
+                <i class="fa fa-bars"></i>
+            </a>
+
+        </div>
+
+    </div>
+
+    <div class="w3-display-container bgimg-1 " id="home">
+
+        <div class="w3-display-middle w3-center">
+            <h3 class="w3-text-white">Join Your Best Hood</h3>
+
+        </div>
+    </div>
+</body>
+<script>
+    // Toggle between showing and hiding the sidebar when clicking the menu icon
+    var mySidebar = document.getElementById("mySidebar");
+
+    function w3_open() {
+        if (mySidebar.style.display === 'block') {
+            mySidebar.style.display = 'none';
+        } else {
+            mySidebar.style.display = 'block';
+        }
+    }
+
+    // Close the sidebar with the close button
+    function w3_close() {
+        mySidebar.style.display = "none";
+    }
+</script>
+</html>
